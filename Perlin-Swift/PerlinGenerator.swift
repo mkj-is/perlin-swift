@@ -79,7 +79,7 @@ class PerlinGenerator {
         return 0
     }
 
-    func dotProductI(x0: Float, x1: Int8,
+    func dotProduct(x0: Float, x1: Int8,
                      y0: Float, y1: Int8,
                      z0: Float, z1: Int8,
                      t0: Float, t1: Int8) -> Float {
@@ -139,22 +139,22 @@ class PerlinGenerator {
         var g1111 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z1, l: t1)]
 
         // The 16 dot products
-        let b0000 = dotProductI(x0: dx0, x1: g0000[0], y0:dy0, y1:g0000[1], z0:dz0, z1:g0000[2], t0:dt0, t1:g0000[3])
-        let b0001 = dotProductI(x0: dx0, x1: g0001[0], y0:dy0, y1:g0001[1], z0:dz0, z1:g0001[2], t0:dt1, t1:g0001[3])
-        let b0010 = dotProductI(x0: dx0, x1: g0010[0], y0:dy0, y1:g0010[1], z0:dz1, z1:g0010[2], t0:dt0, t1:g0010[3])
-        let b0011 = dotProductI(x0: dx0, x1: g0011[0], y0:dy0, y1:g0011[1], z0:dz1, z1:g0011[2], t0:dt1, t1:g0011[3])
-        let b0100 = dotProductI(x0: dx0, x1: g0100[0], y0:dy1, y1:g0100[1], z0:dz0, z1:g0100[2], t0:dt0, t1:g0100[3])
-        let b0101 = dotProductI(x0: dx0, x1: g0101[0], y0:dy1, y1:g0101[1], z0:dz0, z1:g0101[2], t0:dt1, t1:g0101[3])
-        let b0110 = dotProductI(x0: dx0, x1: g0110[0], y0:dy1, y1:g0110[1], z0:dz1, z1:g0110[2], t0:dt0, t1:g0110[3])
-        let b0111 = dotProductI(x0: dx0, x1: g0111[0], y0:dy1, y1:g0111[1], z0:dz1, z1:g0111[2], t0:dt1, t1:g0111[3])
-        let b1000 = dotProductI(x0: dx1, x1: g1000[0], y0:dy0, y1:g1000[1], z0:dz0, z1:g1000[2], t0:dt0, t1:g1000[3])
-        let b1001 = dotProductI(x0: dx1, x1: g1001[0], y0:dy0, y1:g1001[1], z0:dz0, z1:g1001[2], t0:dt1, t1:g1001[3])
-        let b1010 = dotProductI(x0: dx1, x1: g1010[0], y0:dy0, y1:g1010[1], z0:dz1, z1:g1010[2], t0:dt0, t1:g1010[3])
-        let b1011 = dotProductI(x0: dx1, x1: g1011[0], y0:dy0, y1:g1011[1], z0:dz1, z1:g1011[2], t0:dt1, t1:g1011[3])
-        let b1100 = dotProductI(x0: dx1, x1: g1100[0], y0:dy1, y1:g1100[1], z0:dz0, z1:g1100[2], t0:dt0, t1:g1100[3])
-        let b1101 = dotProductI(x0: dx1, x1: g1101[0], y0:dy1, y1:g1101[1], z0:dz0, z1:g1101[2], t0:dt1, t1:g1101[3])
-        let b1110 = dotProductI(x0: dx1, x1: g1110[0], y0:dy1, y1:g1110[1], z0:dz1, z1:g1110[2], t0:dt0, t1:g1110[3])
-        let b1111 = dotProductI(x0: dx1, x1: g1111[0], y0:dy1, y1:g1111[1], z0:dz1, z1:g1111[2], t0:dt1, t1:g1111[3])
+        let b0000 = dotProduct(x0: dx0, x1: g0000[0], y0:dy0, y1:g0000[1], z0:dz0, z1:g0000[2], t0:dt0, t1:g0000[3])
+        let b0001 = dotProduct(x0: dx0, x1: g0001[0], y0:dy0, y1:g0001[1], z0:dz0, z1:g0001[2], t0:dt1, t1:g0001[3])
+        let b0010 = dotProduct(x0: dx0, x1: g0010[0], y0:dy0, y1:g0010[1], z0:dz1, z1:g0010[2], t0:dt0, t1:g0010[3])
+        let b0011 = dotProduct(x0: dx0, x1: g0011[0], y0:dy0, y1:g0011[1], z0:dz1, z1:g0011[2], t0:dt1, t1:g0011[3])
+        let b0100 = dotProduct(x0: dx0, x1: g0100[0], y0:dy1, y1:g0100[1], z0:dz0, z1:g0100[2], t0:dt0, t1:g0100[3])
+        let b0101 = dotProduct(x0: dx0, x1: g0101[0], y0:dy1, y1:g0101[1], z0:dz0, z1:g0101[2], t0:dt1, t1:g0101[3])
+        let b0110 = dotProduct(x0: dx0, x1: g0110[0], y0:dy1, y1:g0110[1], z0:dz1, z1:g0110[2], t0:dt0, t1:g0110[3])
+        let b0111 = dotProduct(x0: dx0, x1: g0111[0], y0:dy1, y1:g0111[1], z0:dz1, z1:g0111[2], t0:dt1, t1:g0111[3])
+        let b1000 = dotProduct(x0: dx1, x1: g1000[0], y0:dy0, y1:g1000[1], z0:dz0, z1:g1000[2], t0:dt0, t1:g1000[3])
+        let b1001 = dotProduct(x0: dx1, x1: g1001[0], y0:dy0, y1:g1001[1], z0:dz0, z1:g1001[2], t0:dt1, t1:g1001[3])
+        let b1010 = dotProduct(x0: dx1, x1: g1010[0], y0:dy0, y1:g1010[1], z0:dz1, z1:g1010[2], t0:dt0, t1:g1010[3])
+        let b1011 = dotProduct(x0: dx1, x1: g1011[0], y0:dy0, y1:g1011[1], z0:dz1, z1:g1011[2], t0:dt1, t1:g1011[3])
+        let b1100 = dotProduct(x0: dx1, x1: g1100[0], y0:dy1, y1:g1100[1], z0:dz0, z1:g1100[2], t0:dt0, t1:g1100[3])
+        let b1101 = dotProduct(x0: dx1, x1: g1101[0], y0:dy1, y1:g1101[1], z0:dz0, z1:g1101[2], t0:dt1, t1:g1101[3])
+        let b1110 = dotProduct(x0: dx1, x1: g1110[0], y0:dy1, y1:g1110[1], z0:dz1, z1:g1110[2], t0:dt0, t1:g1110[3])
+        let b1111 = dotProduct(x0: dx1, x1: g1111[0], y0:dy1, y1:g1111[1], z0:dz1, z1:g1111[2], t0:dt1, t1:g1111[3])
 
         dx0 = spline(state: dx0)
         dy0 = spline(state: dy0)
