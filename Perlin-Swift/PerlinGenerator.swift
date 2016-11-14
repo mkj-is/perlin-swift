@@ -46,16 +46,15 @@ class PerlinGenerator {
         [-1, -1, -1, 0], [-1, -1, 0, -1], [-1, 0, -1, -1], [0, -1, -1, -1],
     ]
 
-    var permut: [Int]
+    let permutation: [Int]
 
     var octaves: Int
     var persistence: Float
     var zoom: Float
 
     init() {
-        permut = []
-        for _ in 0 ..< PERMUTATION_SIZE {
-            permut.append(Int(arc4random() & 0xff))
+        permutation = (0..<PERMUTATION_SIZE).map { _ in
+            Int(arc4random() & 0xff)
         }
         octaves = 1
         persistence = 1.0
@@ -63,7 +62,7 @@ class PerlinGenerator {
     }
 
     func gradientAt(_ i: Int, j: Int, k: Int, l: Int) -> Int {
-        return (permut[(l + permut[(k + permut[(j + permut[i & 0xff])
+        return (permutation[(l + permutation[(k + permutation[(j + permutation[i & 0xff])
                                                 & 0xff])
                                     & 0xff])
                        & 0xff]
