@@ -14,20 +14,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var zoomLabel: UILabel!
     @IBOutlet var persistenceLabel: UILabel!
     @IBOutlet var octavesLabel: UILabel!
-    
+
     @IBOutlet var zoomSlider: UISlider!
     @IBOutlet var persistenceSlider: UISlider!
     @IBOutlet var octavesSlider: UISlider!
-    
+
     @IBOutlet var sizeXtext: UITextField!
     @IBOutlet var sizeYtext: UITextField!
-    
+
     @IBOutlet var imageView: UIImageView!
-    
+
     fileprivate var generator = PerlinGenerator()
-    
+
     @IBAction func aSliderChanged(_ sender: AnyObject) {
-        
+
         let slider = sender as! UISlider
         if slider === zoomSlider {
             zoomLabel.textAlignment = NSTextAlignment.left
@@ -39,7 +39,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             octavesLabel.textAlignment = NSTextAlignment.left
             octavesLabel.text = "O = \(Int(slider.value))"
         }
-        
+
         updateNoiseImage()
     }
 
@@ -47,31 +47,30 @@ class ViewController: UIViewController, UITextFieldDelegate {
         generator = PerlinGenerator()
         updateNoiseImage()
     }
-    
+
     func updateNoiseImage() {
-        
+
         generator.octaves = Int(octavesSlider.value)
         generator.zoom = zoomSlider.value
         generator.persistence = persistenceSlider.value
-        
+
         let sizeX = CGFloat(NSString(string: sizeXtext.text!).floatValue)
         let sizeY = CGFloat(NSString(string: sizeYtext.text!).floatValue)
         let size = CGSize(width: sizeX, height: sizeY)
-        
+
         let noise = generateNoiseImage(generator, size: size)
         imageView.image = noise
     }
-    
-    
-    func generateNoiseImage(_ generator:PerlinGenerator, size:CGSize) -> UIImage {
+
+    func generateNoiseImage(_ generator: PerlinGenerator, size: CGSize) -> UIImage {
 
         let width = Int(size.width)
         let height = Int(size.height)
-        
-        let startTime = CFAbsoluteTimeGetCurrent();
-        
+
+        let startTime = CFAbsoluteTimeGetCurrent()
+
         var pixelArray = [PixelData](repeating: PixelData(a: 255, r:0, g: 0, b: 0), count: width * height)
-        
+
         for i in 0 ..< height {
             for j in 0 ..< width {
                 var val = abs(generator.perlinNoise(Float(j), y: Float(i), z: 0, t: 0))
@@ -86,11 +85,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         }
         let outputImage = imageFromARGB32Bitmap(pixelArray, width: width, height: height)
-        
-        print(" R RENDER:" + String(format: "%.4f", CFAbsoluteTimeGetCurrent() - startTime));
-        
+
+        print(" R RENDER:" + String(format: "%.4f", CFAbsoluteTimeGetCurrent() - startTime))
+
         return outputImage
-        
+
         /*
         let bounds = CGRect(origin: CGPoint.zeroPoint, size: size)
         let opaque = false
@@ -112,16 +111,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         UIGraphicsEndImageContext()
         return image*/
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         sizeXtext.delegate = self
         sizeYtext.delegate = self
-        
+
         //strech to fit but maintain aspect ratio
         imageView.contentMode = UIViewContentMode.scaleAspectFit
-        
+
         //use nearest neighbour, we want to see the pixels (not blur them)
         imageView.layer.magnificationFilter = kCAFilterNearest
     }
@@ -131,11 +130,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
             let size = self.imageView.bounds.size
             sizeXtext.text = "\(Int(size.width/5))"
             sizeYtext.text = "\(Int(size.height/5))"
-            
+
             updateNoiseImage()
         }
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -148,7 +147,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateNoiseImage()
     }
@@ -158,25 +157,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
     //      http://blog.human-friendly.com/drawing-images-from-pixel-data-in-swift
     //
     struct PixelData {
-        var a:UInt8 = 255
-        var r:UInt8
-        var g:UInt8
-        var b:UInt8
+        var a: UInt8 = 255
+        var r: UInt8
+        var g: UInt8
+        var b: UInt8
     }
-    
+
     fileprivate let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-    fileprivate let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
-    
-    func imageFromARGB32Bitmap(_ pixels:[PixelData], width:Int, height:Int)->UIImage {
-        let bitsPerComponent:Int = 8
-        let bitsPerPixel:Int = 32
-        
+    fileprivate let bitmapInfo: CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
+
+    func imageFromARGB32Bitmap(_ pixels: [PixelData], width: Int, height: Int) -> UIImage {
+        let bitsPerComponent: Int = 8
+        let bitsPerPixel: Int = 32
+
         assert(pixels.count == Int(width * height))
-        
+
         var data = pixels // Copy to mutable []
 
         let provider = CGDataProvider(data: NSData(bytes: &data, length: data.count * MemoryLayout<PixelData>.size))
-        
+
         let cgim = CGImage(
             width: width,
             height: height,
@@ -192,7 +191,5 @@ class ViewController: UIViewController, UITextFieldDelegate {
         )
         return UIImage(cgImage: cgim!)
     }
-    
-    
-}
 
+}
