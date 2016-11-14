@@ -73,7 +73,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
         for i in 0 ..< height {
             for j in 0 ..< width {
-                var val = abs(generator.perlinNoise(Float(j), y: Float(i), z: 0, t: 0))
+                var val = abs(generator.perlinNoise(x: Float(j), y: Float(i), z: 0, t: 0))
                 if val > 1 {
                     val = 1
                 }

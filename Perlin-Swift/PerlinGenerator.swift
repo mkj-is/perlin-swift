@@ -61,7 +61,7 @@ class PerlinGenerator {
         zoom = 1.0
     }
 
-    func gradientAt(_ i: Int, j: Int, k: Int, l: Int) -> Int {
+    func gradientAt(i: Int, j: Int, k: Int, l: Int) -> Int {
         return (permutation[(l + permutation[(k + permutation[(j + permutation[i & 0xff])
                                                 & 0xff])
                                     & 0xff])
@@ -69,7 +69,7 @@ class PerlinGenerator {
             & 0x1f)
     }
 
-    func productOf(_ a: Float, b: Int8) -> Float {
+    func productOf(a: Float, b: Int8) -> Float {
         if b > 0 {
             return a
         }
@@ -79,27 +79,27 @@ class PerlinGenerator {
         return 0
     }
 
-    func dotProductI(_ x0: Float, x1: Int8,
+    func dotProductI(x0: Float, x1: Int8,
                      y0: Float, y1: Int8,
                      z0: Float, z1: Int8,
                      t0: Float, t1: Int8) -> Float {
-            return productOf(x0, b: x1) +
-                   productOf(y0, b: y1) +
-                   productOf(z0, b: z1) +
-                   productOf(t0, b: t1)
+            return productOf(a: x0, b: x1) +
+                   productOf(a: y0, b: y1) +
+                   productOf(a: z0, b: z1) +
+                   productOf(a: t0, b: t1)
     }
 
-    func spline(_ state: Float) -> Float {
+    func spline(state: Float) -> Float {
         let square = state * state
         let cubic = square * state
         return cubic * (6 * square - 15 * state + 10)
     }
 
-    func interpolate(_ a: Float, b: Float, x: Float) -> Float {
+    func interpolate(a: Float, b: Float, x: Float) -> Float {
         return a + x*(b-a)
     }
 
-    func smoothNoise(_ x: Float, y: Float, z: Float, t: Float) -> Float {
+    func smoothNoise(x: Float, y: Float, z: Float, t: Float) -> Float {
         let x0 = Int(x > 0 ? x : x - 1)
         let y0 = Int(y > 0 ? y : y - 1)
         let z0 = Int(z > 0 ? z : z - 1)
@@ -121,76 +121,76 @@ class PerlinGenerator {
         let dt1 = t-Float(t1)
 
         // The 16 gradient values
-        var g0000 = PerlinGenerator.gradient[gradientAt(x0, j: y0, k: z0, l: t0)]
-        var g0001 = PerlinGenerator.gradient[gradientAt(x0, j: y0, k: z0, l: t1)]
-        var g0010 = PerlinGenerator.gradient[gradientAt(x0, j: y0, k: z1, l: t0)]
-        var g0011 = PerlinGenerator.gradient[gradientAt(x0, j: y0, k: z1, l: t1)]
-        var g0100 = PerlinGenerator.gradient[gradientAt(x0, j: y1, k: z0, l: t0)]
-        var g0101 = PerlinGenerator.gradient[gradientAt(x0, j: y1, k: z0, l: t1)]
-        var g0110 = PerlinGenerator.gradient[gradientAt(x0, j: y1, k: z1, l: t0)]
-        var g0111 = PerlinGenerator.gradient[gradientAt(x0, j: y1, k: z1, l: t1)]
-        var g1000 = PerlinGenerator.gradient[gradientAt(x1, j: y0, k: z0, l: t0)]
-        var g1001 = PerlinGenerator.gradient[gradientAt(x1, j: y0, k: z0, l: t1)]
-        var g1010 = PerlinGenerator.gradient[gradientAt(x1, j: y0, k: z1, l: t0)]
-        var g1011 = PerlinGenerator.gradient[gradientAt(x1, j: y0, k: z1, l: t1)]
-        var g1100 = PerlinGenerator.gradient[gradientAt(x1, j: y1, k: z0, l: t0)]
-        var g1101 = PerlinGenerator.gradient[gradientAt(x1, j: y1, k: z0, l: t1)]
-        var g1110 = PerlinGenerator.gradient[gradientAt(x1, j: y1, k: z1, l: t0)]
-        var g1111 = PerlinGenerator.gradient[gradientAt(x1, j: y1, k: z1, l: t1)]
+        var g0000 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z0, l: t0)]
+        var g0001 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z0, l: t1)]
+        var g0010 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z1, l: t0)]
+        var g0011 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z1, l: t1)]
+        var g0100 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z0, l: t0)]
+        var g0101 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z0, l: t1)]
+        var g0110 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z1, l: t0)]
+        var g0111 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z1, l: t1)]
+        var g1000 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z0, l: t0)]
+        var g1001 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z0, l: t1)]
+        var g1010 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z1, l: t0)]
+        var g1011 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z1, l: t1)]
+        var g1100 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z0, l: t0)]
+        var g1101 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z0, l: t1)]
+        var g1110 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z1, l: t0)]
+        var g1111 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z1, l: t1)]
 
         // The 16 dot products
-        let b0000 = dotProductI(dx0, x1: g0000[0], y0:dy0, y1:g0000[1], z0:dz0, z1:g0000[2], t0:dt0, t1:g0000[3])
-        let b0001 = dotProductI(dx0, x1: g0001[0], y0:dy0, y1:g0001[1], z0:dz0, z1:g0001[2], t0:dt1, t1:g0001[3])
-        let b0010 = dotProductI(dx0, x1: g0010[0], y0:dy0, y1:g0010[1], z0:dz1, z1:g0010[2], t0:dt0, t1:g0010[3])
-        let b0011 = dotProductI(dx0, x1: g0011[0], y0:dy0, y1:g0011[1], z0:dz1, z1:g0011[2], t0:dt1, t1:g0011[3])
-        let b0100 = dotProductI(dx0, x1: g0100[0], y0:dy1, y1:g0100[1], z0:dz0, z1:g0100[2], t0:dt0, t1:g0100[3])
-        let b0101 = dotProductI(dx0, x1: g0101[0], y0:dy1, y1:g0101[1], z0:dz0, z1:g0101[2], t0:dt1, t1:g0101[3])
-        let b0110 = dotProductI(dx0, x1: g0110[0], y0:dy1, y1:g0110[1], z0:dz1, z1:g0110[2], t0:dt0, t1:g0110[3])
-        let b0111 = dotProductI(dx0, x1: g0111[0], y0:dy1, y1:g0111[1], z0:dz1, z1:g0111[2], t0:dt1, t1:g0111[3])
-        let b1000 = dotProductI(dx1, x1: g1000[0], y0:dy0, y1:g1000[1], z0:dz0, z1:g1000[2], t0:dt0, t1:g1000[3])
-        let b1001 = dotProductI(dx1, x1: g1001[0], y0:dy0, y1:g1001[1], z0:dz0, z1:g1001[2], t0:dt1, t1:g1001[3])
-        let b1010 = dotProductI(dx1, x1: g1010[0], y0:dy0, y1:g1010[1], z0:dz1, z1:g1010[2], t0:dt0, t1:g1010[3])
-        let b1011 = dotProductI(dx1, x1: g1011[0], y0:dy0, y1:g1011[1], z0:dz1, z1:g1011[2], t0:dt1, t1:g1011[3])
-        let b1100 = dotProductI(dx1, x1: g1100[0], y0:dy1, y1:g1100[1], z0:dz0, z1:g1100[2], t0:dt0, t1:g1100[3])
-        let b1101 = dotProductI(dx1, x1: g1101[0], y0:dy1, y1:g1101[1], z0:dz0, z1:g1101[2], t0:dt1, t1:g1101[3])
-        let b1110 = dotProductI(dx1, x1: g1110[0], y0:dy1, y1:g1110[1], z0:dz1, z1:g1110[2], t0:dt0, t1:g1110[3])
-        let b1111 = dotProductI(dx1, x1: g1111[0], y0:dy1, y1:g1111[1], z0:dz1, z1:g1111[2], t0:dt1, t1:g1111[3])
+        let b0000 = dotProductI(x0: dx0, x1: g0000[0], y0:dy0, y1:g0000[1], z0:dz0, z1:g0000[2], t0:dt0, t1:g0000[3])
+        let b0001 = dotProductI(x0: dx0, x1: g0001[0], y0:dy0, y1:g0001[1], z0:dz0, z1:g0001[2], t0:dt1, t1:g0001[3])
+        let b0010 = dotProductI(x0: dx0, x1: g0010[0], y0:dy0, y1:g0010[1], z0:dz1, z1:g0010[2], t0:dt0, t1:g0010[3])
+        let b0011 = dotProductI(x0: dx0, x1: g0011[0], y0:dy0, y1:g0011[1], z0:dz1, z1:g0011[2], t0:dt1, t1:g0011[3])
+        let b0100 = dotProductI(x0: dx0, x1: g0100[0], y0:dy1, y1:g0100[1], z0:dz0, z1:g0100[2], t0:dt0, t1:g0100[3])
+        let b0101 = dotProductI(x0: dx0, x1: g0101[0], y0:dy1, y1:g0101[1], z0:dz0, z1:g0101[2], t0:dt1, t1:g0101[3])
+        let b0110 = dotProductI(x0: dx0, x1: g0110[0], y0:dy1, y1:g0110[1], z0:dz1, z1:g0110[2], t0:dt0, t1:g0110[3])
+        let b0111 = dotProductI(x0: dx0, x1: g0111[0], y0:dy1, y1:g0111[1], z0:dz1, z1:g0111[2], t0:dt1, t1:g0111[3])
+        let b1000 = dotProductI(x0: dx1, x1: g1000[0], y0:dy0, y1:g1000[1], z0:dz0, z1:g1000[2], t0:dt0, t1:g1000[3])
+        let b1001 = dotProductI(x0: dx1, x1: g1001[0], y0:dy0, y1:g1001[1], z0:dz0, z1:g1001[2], t0:dt1, t1:g1001[3])
+        let b1010 = dotProductI(x0: dx1, x1: g1010[0], y0:dy0, y1:g1010[1], z0:dz1, z1:g1010[2], t0:dt0, t1:g1010[3])
+        let b1011 = dotProductI(x0: dx1, x1: g1011[0], y0:dy0, y1:g1011[1], z0:dz1, z1:g1011[2], t0:dt1, t1:g1011[3])
+        let b1100 = dotProductI(x0: dx1, x1: g1100[0], y0:dy1, y1:g1100[1], z0:dz0, z1:g1100[2], t0:dt0, t1:g1100[3])
+        let b1101 = dotProductI(x0: dx1, x1: g1101[0], y0:dy1, y1:g1101[1], z0:dz0, z1:g1101[2], t0:dt1, t1:g1101[3])
+        let b1110 = dotProductI(x0: dx1, x1: g1110[0], y0:dy1, y1:g1110[1], z0:dz1, z1:g1110[2], t0:dt0, t1:g1110[3])
+        let b1111 = dotProductI(x0: dx1, x1: g1111[0], y0:dy1, y1:g1111[1], z0:dz1, z1:g1111[2], t0:dt1, t1:g1111[3])
 
-        dx0 = spline(dx0)
-        dy0 = spline(dy0)
-        dz0 = spline(dz0)
-        dt0 = spline(dt0)
+        dx0 = spline(state: dx0)
+        dy0 = spline(state: dy0)
+        dz0 = spline(state: dz0)
+        dt0 = spline(state: dt0)
 
-        let b111 = interpolate(b1110, b:b1111, x:dt0)
-        let b110 = interpolate(b1100, b:b1101, x:dt0)
-        let b101 = interpolate(b1010, b:b1011, x:dt0)
-        let b100 = interpolate(b1000, b:b1001, x:dt0)
-        let b011 = interpolate(b0110, b:b0111, x:dt0)
-        let b010 = interpolate(b0100, b:b0101, x:dt0)
-        let b001 = interpolate(b0010, b:b0011, x:dt0)
-        let b000 = interpolate(b0000, b:b0001, x:dt0)
+        let b111 = interpolate(a: b1110, b:b1111, x:dt0)
+        let b110 = interpolate(a: b1100, b:b1101, x:dt0)
+        let b101 = interpolate(a: b1010, b:b1011, x:dt0)
+        let b100 = interpolate(a: b1000, b:b1001, x:dt0)
+        let b011 = interpolate(a: b0110, b:b0111, x:dt0)
+        let b010 = interpolate(a: b0100, b:b0101, x:dt0)
+        let b001 = interpolate(a: b0010, b:b0011, x:dt0)
+        let b000 = interpolate(a: b0000, b:b0001, x:dt0)
 
-        let b11 = interpolate(b110, b:b111, x:dz0)
-        let b10 = interpolate(b100, b:b101, x:dz0)
-        let b01 = interpolate(b010, b:b011, x:dz0)
-        let b00 = interpolate(b000, b:b001, x:dz0)
+        let b11 = interpolate(a: b110, b:b111, x:dz0)
+        let b10 = interpolate(a: b100, b:b101, x:dz0)
+        let b01 = interpolate(a: b010, b:b011, x:dz0)
+        let b00 = interpolate(a: b000, b:b001, x:dz0)
 
-        let b1 = interpolate(b10, b:b11, x:dy0)
-        let b0 = interpolate(b00, b:b01, x:dy0)
+        let b1 = interpolate(a: b10, b:b11, x:dy0)
+        let b0 = interpolate(a: b00, b:b01, x:dy0)
 
-        let result = interpolate(b0, b:b1, x:dx0)
+        let result = interpolate(a: b0, b:b1, x:dx0)
 
         return result
     }
 
-    func perlinNoise(_ x: Float, y: Float, z: Float, t: Float) -> Float {
+    func perlinNoise(x: Float, y: Float, z: Float, t: Float) -> Float {
 
         var noise: Float = 0.0
         for octave in 0..<octaves {
             let frequency: Float = powf(2, Float(octave))
             let amplitude = powf(persistence, Float(octave))
 
-            noise += smoothNoise(x * frequency/zoom,
+            noise += smoothNoise(x: x * frequency/zoom,
                                       y: y * frequency/zoom,
                                       z: z * frequency/zoom,
                                       t: t * frequency/zoom) * amplitude
