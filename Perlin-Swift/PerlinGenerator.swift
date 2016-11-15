@@ -126,22 +126,22 @@ class PerlinGenerator {
         let dt1 = t - Double(t1)
 
         // The 16 gradient values
-        var g0000 = gradient[index(i: x0, j: y0, k: z0, l: t0)]
-        var g0001 = gradient[index(i: x0, j: y0, k: z0, l: t1)]
-        var g0010 = gradient[index(i: x0, j: y0, k: z1, l: t0)]
-        var g0011 = gradient[index(i: x0, j: y0, k: z1, l: t1)]
-        var g0100 = gradient[index(i: x0, j: y1, k: z0, l: t0)]
-        var g0101 = gradient[index(i: x0, j: y1, k: z0, l: t1)]
-        var g0110 = gradient[index(i: x0, j: y1, k: z1, l: t0)]
-        var g0111 = gradient[index(i: x0, j: y1, k: z1, l: t1)]
-        var g1000 = gradient[index(i: x1, j: y0, k: z0, l: t0)]
-        var g1001 = gradient[index(i: x1, j: y0, k: z0, l: t1)]
-        var g1010 = gradient[index(i: x1, j: y0, k: z1, l: t0)]
-        var g1011 = gradient[index(i: x1, j: y0, k: z1, l: t1)]
-        var g1100 = gradient[index(i: x1, j: y1, k: z0, l: t0)]
-        var g1101 = gradient[index(i: x1, j: y1, k: z0, l: t1)]
-        var g1110 = gradient[index(i: x1, j: y1, k: z1, l: t0)]
-        var g1111 = gradient[index(i: x1, j: y1, k: z1, l: t1)]
+        let g0000 = gradient[index(i: x0, j: y0, k: z0, l: t0)]
+        let g0001 = gradient[index(i: x0, j: y0, k: z0, l: t1)]
+        let g0010 = gradient[index(i: x0, j: y0, k: z1, l: t0)]
+        let g0011 = gradient[index(i: x0, j: y0, k: z1, l: t1)]
+        let g0100 = gradient[index(i: x0, j: y1, k: z0, l: t0)]
+        let g0101 = gradient[index(i: x0, j: y1, k: z0, l: t1)]
+        let g0110 = gradient[index(i: x0, j: y1, k: z1, l: t0)]
+        let g0111 = gradient[index(i: x0, j: y1, k: z1, l: t1)]
+        let g1000 = gradient[index(i: x1, j: y0, k: z0, l: t0)]
+        let g1001 = gradient[index(i: x1, j: y0, k: z0, l: t1)]
+        let g1010 = gradient[index(i: x1, j: y0, k: z1, l: t0)]
+        let g1011 = gradient[index(i: x1, j: y0, k: z1, l: t1)]
+        let g1100 = gradient[index(i: x1, j: y1, k: z0, l: t0)]
+        let g1101 = gradient[index(i: x1, j: y1, k: z0, l: t1)]
+        let g1110 = gradient[index(i: x1, j: y1, k: z1, l: t0)]
+        let g1111 = gradient[index(i: x1, j: y1, k: z1, l: t1)]
 
         // The 16 dot products
         let b0000 = dotProduct(x0: dx0, x1: g0000[0], y0:dy0, y1:g0000[1], z0:dz0, z1:g0000[2], t0:dt0, t1:g0000[3])
