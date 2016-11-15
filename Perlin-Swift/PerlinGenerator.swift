@@ -31,37 +31,43 @@
 
 import Foundation
 
-let PERMUTATION_SIZE = 256
+// MARK: - Seeds
+
+let permutationSize = 256
+let permutation: [Int] = (0..<permutationSize).map { _ in
+    Int(arc4random() & 0xff)
+}
+
+// MARK: - Gradient
+
+typealias Gradient = [[Int8]]
+
+let gradient: Gradient = [
+    [ 1,  1,  1, 0], [ 1,  1, 0,  1], [ 1, 0,  1,  1], [0,  1,  1,  1],
+    [ 1,  1, -1, 0], [ 1,  1, 0, -1], [ 1, 0,  1, -1], [0,  1,  1, -1],
+    [ 1, -1,  1, 0], [ 1, -1, 0,  1], [ 1, 0, -1,  1], [0,  1, -1,  1],
+    [ 1, -1, -1, 0], [ 1, -1, 0, -1], [ 1, 0, -1, -1], [0,  1, -1, -1],
+    [-1,  1,  1, 0], [-1,  1, 0,  1], [-1, 0,  1,  1], [0, -1,  1,  1],
+    [-1,  1, -1, 0], [-1,  1, 0, -1], [-1, 0,  1, -1], [0, -1,  1, -1],
+    [-1, -1,  1, 0], [-1, -1, 0,  1], [-1, 0, -1,  1], [0, -1, -1,  1],
+    [-1, -1, -1, 0], [-1, -1, 0, -1], [-1, 0, -1, -1], [0, -1, -1, -1],
+]
+
+// MARK: - Noise
 
 class PerlinGenerator {
-
-    static let gradient: [[Int8]] = [
-        [ 1,  1,  1, 0], [ 1,  1, 0,  1], [ 1, 0,  1,  1], [0,  1,  1,  1],
-        [ 1,  1, -1, 0], [ 1,  1, 0, -1], [ 1, 0,  1, -1], [0,  1,  1, -1],
-        [ 1, -1,  1, 0], [ 1, -1, 0,  1], [ 1, 0, -1,  1], [0,  1, -1,  1],
-        [ 1, -1, -1, 0], [ 1, -1, 0, -1], [ 1, 0, -1, -1], [0,  1, -1, -1],
-        [-1,  1,  1, 0], [-1,  1, 0,  1], [-1, 0,  1,  1], [0, -1,  1,  1],
-        [-1,  1, -1, 0], [-1,  1, 0, -1], [-1, 0,  1, -1], [0, -1,  1, -1],
-        [-1, -1,  1, 0], [-1, -1, 0,  1], [-1, 0, -1,  1], [0, -1, -1,  1],
-        [-1, -1, -1, 0], [-1, -1, 0, -1], [-1, 0, -1, -1], [0, -1, -1, -1],
-    ]
-
-    let permutation: [Int]
 
     var octaves: Int
     var persistence: Double
     var zoom: Double
 
     init() {
-        permutation = (0..<PERMUTATION_SIZE).map { _ in
-            Int(arc4random() & 0xff)
-        }
         octaves = 1
         persistence = 1
         zoom = 1
     }
 
-    func gradientAt(i: Int, j: Int, k: Int, l: Int) -> Int {
+    func index(i: Int, j: Int, k: Int, l: Int) -> Int {
         let p0 = i & 0xff
         let p1 = (j + permutation[p0]) & 0xff
         let p2 = (k + permutation[p1]) & 0xff
@@ -120,22 +126,22 @@ class PerlinGenerator {
         let dt1 = t - Double(t1)
 
         // The 16 gradient values
-        var g0000 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z0, l: t0)]
-        var g0001 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z0, l: t1)]
-        var g0010 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z1, l: t0)]
-        var g0011 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z1, l: t1)]
-        var g0100 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z0, l: t0)]
-        var g0101 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z0, l: t1)]
-        var g0110 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z1, l: t0)]
-        var g0111 = PerlinGenerator.gradient[gradientAt(i: x0, j: y1, k: z1, l: t1)]
-        var g1000 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z0, l: t0)]
-        var g1001 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z0, l: t1)]
-        var g1010 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z1, l: t0)]
-        var g1011 = PerlinGenerator.gradient[gradientAt(i: x1, j: y0, k: z1, l: t1)]
-        var g1100 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z0, l: t0)]
-        var g1101 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z0, l: t1)]
-        var g1110 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z1, l: t0)]
-        var g1111 = PerlinGenerator.gradient[gradientAt(i: x1, j: y1, k: z1, l: t1)]
+        var g0000 = gradient[index(i: x0, j: y0, k: z0, l: t0)]
+        var g0001 = gradient[index(i: x0, j: y0, k: z0, l: t1)]
+        var g0010 = gradient[index(i: x0, j: y0, k: z1, l: t0)]
+        var g0011 = gradient[index(i: x0, j: y0, k: z1, l: t1)]
+        var g0100 = gradient[index(i: x0, j: y1, k: z0, l: t0)]
+        var g0101 = gradient[index(i: x0, j: y1, k: z0, l: t1)]
+        var g0110 = gradient[index(i: x0, j: y1, k: z1, l: t0)]
+        var g0111 = gradient[index(i: x0, j: y1, k: z1, l: t1)]
+        var g1000 = gradient[index(i: x1, j: y0, k: z0, l: t0)]
+        var g1001 = gradient[index(i: x1, j: y0, k: z0, l: t1)]
+        var g1010 = gradient[index(i: x1, j: y0, k: z1, l: t0)]
+        var g1011 = gradient[index(i: x1, j: y0, k: z1, l: t1)]
+        var g1100 = gradient[index(i: x1, j: y1, k: z0, l: t0)]
+        var g1101 = gradient[index(i: x1, j: y1, k: z0, l: t1)]
+        var g1110 = gradient[index(i: x1, j: y1, k: z1, l: t0)]
+        var g1111 = gradient[index(i: x1, j: y1, k: z1, l: t1)]
 
         // The 16 dot products
         let b0000 = dotProduct(x0: dx0, x1: g0000[0], y0:dy0, y1:g0000[1], z0:dz0, z1:g0000[2], t0:dt0, t1:g0000[3])
