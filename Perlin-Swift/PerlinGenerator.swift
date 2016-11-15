@@ -49,16 +49,16 @@ class PerlinGenerator {
     let permutation: [Int]
 
     var octaves: Int
-    var persistence: Float
-    var zoom: Float
+    var persistence: Double
+    var zoom: Double
 
     init() {
         permutation = (0..<PERMUTATION_SIZE).map { _ in
             Int(arc4random() & 0xff)
         }
         octaves = 1
-        persistence = 1.0
-        zoom = 1.0
+        persistence = 1
+        zoom = 1
     }
 
     func gradientAt(i: Int, j: Int, k: Int, l: Int) -> Int {
@@ -69,37 +69,36 @@ class PerlinGenerator {
         return permutation[p3] & 0x1f
     }
 
-    func productOf(a: Float, b: Int8) -> Float {
+    func productOf(a: Double, b: Int8) -> Double {
         if b > 0 {
             return a
-        }
-        if b < 0 {
+        } else if b < 0 {
             return -a
         }
         return 0
     }
 
-    func dotProduct(x0: Float, x1: Int8,
-                     y0: Float, y1: Int8,
-                     z0: Float, z1: Int8,
-                     t0: Float, t1: Int8) -> Float {
+    func dotProduct(x0: Double, x1: Int8,
+                     y0: Double, y1: Int8,
+                     z0: Double, z1: Int8,
+                     t0: Double, t1: Int8) -> Double {
             return productOf(a: x0, b: x1) +
                    productOf(a: y0, b: y1) +
                    productOf(a: z0, b: z1) +
                    productOf(a: t0, b: t1)
     }
 
-    func spline(state: Float) -> Float {
+    func spline(state: Double) -> Double {
         let square = state * state
         let cubic = square * state
         return cubic * (6 * square - 15 * state + 10)
     }
 
-    func interpolate(a: Float, b: Float, x: Float) -> Float {
-        return a + x*(b-a)
+    func interpolate(a: Double, b: Double, x: Double) -> Double {
+        return a + x * (b - a)
     }
 
-    func smoothNoise(x: Float, y: Float, z: Float, t: Float) -> Float {
+    func smoothNoise(x: Double, y: Double, z: Double, t: Double) -> Double {
         let x0 = Int(x > 0 ? x : x - 1)
         let y0 = Int(y > 0 ? y : y - 1)
         let z0 = Int(z > 0 ? z : z - 1)
@@ -111,14 +110,14 @@ class PerlinGenerator {
         let t1 = t0+1
 
         // The vectors
-        var dx0 = x-Float(x0)
-        var dy0 = y-Float(y0)
-        var dz0 = z-Float(z0)
-        var dt0 = t-Float(t0)
-        let dx1 = x-Float(x1)
-        let dy1 = y-Float(y1)
-        let dz1 = z-Float(z1)
-        let dt1 = t-Float(t1)
+        var dx0 = x - Double(x0)
+        var dy0 = y - Double(y0)
+        var dz0 = z - Double(z0)
+        var dt0 = t - Double(t0)
+        let dx1 = x - Double(x1)
+        let dy1 = y - Double(y1)
+        let dz1 = z - Double(z1)
+        let dt1 = t - Double(t1)
 
         // The 16 gradient values
         var g0000 = PerlinGenerator.gradient[gradientAt(i: x0, j: y0, k: z0, l: t0)]
@@ -183,17 +182,17 @@ class PerlinGenerator {
         return result
     }
 
-    func perlinNoise(x: Float, y: Float, z: Float, t: Float) -> Float {
+    func perlinNoise(x: Double, y: Double = 0, z: Double = 0, t: Double = 0) -> Double {
 
-        var noise: Float = 0.0
+        var noise: Double = 0.0
         for octave in 0..<octaves {
-            let frequency: Float = powf(2, Float(octave))
-            let amplitude = powf(persistence, Float(octave))
+            let frequency = pow(2, Double(octave)) / zoom
+            let amplitude = pow(persistence, Double(octave))
 
-            noise += smoothNoise(x: x * frequency/zoom,
-                                      y: y * frequency/zoom,
-                                      z: z * frequency/zoom,
-                                      t: t * frequency/zoom) * amplitude
+            noise += smoothNoise(x: x * frequency,
+                                      y: y * frequency,
+                                      z: z * frequency,
+                                      t: t * frequency) * amplitude
         }
         return noise
     }

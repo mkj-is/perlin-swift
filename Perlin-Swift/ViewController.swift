@@ -51,8 +51,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func updateNoiseImage() {
 
         generator.octaves = Int(octavesSlider.value)
-        generator.zoom = zoomSlider.value
-        generator.persistence = persistenceSlider.value
+        generator.zoom = Double(zoomSlider.value)
+        generator.persistence = Double(persistenceSlider.value)
 
         let sizeX = CGFloat(NSString(string: sizeXtext.text!).floatValue)
         let sizeY = CGFloat(NSString(string: sizeYtext.text!).floatValue)
@@ -73,7 +73,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
         for i in 0 ..< height {
             for j in 0 ..< width {
-                var val = abs(generator.perlinNoise(x: Float(j), y: Float(i), z: 0, t: 0))
+                var val = abs(generator.perlinNoise(x: Double(j), y: Double(i), z: 0, t: 0))
                 if val > 1 {
                     val = 1
                 }
