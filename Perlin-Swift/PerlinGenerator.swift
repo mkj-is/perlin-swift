@@ -53,6 +53,33 @@ let gradient: Gradient = [
     [-1, -1, -1, 0], [-1, -1, 0, -1], [-1, 0, -1, -1], [0, -1, -1, -1],
 ]
 
+// MARK: - Vector
+
+struct Vector<T> {
+    let x: T
+    let y: T
+    let z: T
+    let t: T
+}
+
+extension Vector {
+    var array: [T] {
+        return [x, y, z, t]
+    }
+
+    func map<U>(_ transform: (T) -> U) -> Vector<U> {
+        return Vector<U>(x: transform(x), y: transform(y), z: transform(z), t: transform(t))
+    }
+}
+
+func + (l: Vector<Double>, r: Vector<Double>) -> Vector<Double> {
+    return Vector(x: l.x + r.x, y: l.y + r.y, z: l.z + r.z, t: l.t + r.t)
+}
+
+func - (l: Vector<Double>, r: Vector<Double>) -> Vector<Double> {
+    return l + r.map { -$0 }
+}
+
 // MARK: - Noise
 
 class PerlinGenerator {
